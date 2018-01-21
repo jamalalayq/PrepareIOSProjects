@@ -23,6 +23,7 @@ def main():
             workingPath = path + projectName + "/"
             print("workig directory", workingPath)
             removeFiles(workingPath)
+            makeDirectories(workingPath)
         else:
             print("Invalid xcode project path.")
     except FileNotFoundError:
@@ -30,6 +31,7 @@ def main():
     except Exception:
         print("Error occured.", Exception)
 
+''' Remove unownted files '''
 def removeFiles(path: str):
     if type(path) == str:
         try:
@@ -44,9 +46,20 @@ def removeFiles(path: str):
         print("invalid path.")
 
 
+''' Create directories '''
 def makeDirectories(path: str):
     if type(path) == str:
-        pass
+        try:
+            mkdir(path + "Cells")
+            mkdir(path + "Cells/Controllers")
+            mkdir(path + "Cells/Scenes")
+            mkdir(path + "Modules")
+            mkdir(path + "Modules/Home")
+            mkdir(path + "Resources")
+            mkdir(path + "Extensions")
+            mkdir(path + "Protocols")
+        except OSError:
+            print("directories exist.")
     else:
         print("invalid path.")
 
