@@ -1,5 +1,7 @@
 
 from os import *
+from datetime import *
+import  io
 
 
 '''
@@ -21,15 +23,16 @@ def main():
         xcodeFile = projectName + ".xcodeproj"
         if xcodeFile in phomeDirFiles:
             workingPath = path + projectName + "/"
-            print("workig directory", workingPath)
+            print("working directory", workingPath)
             removeFiles(workingPath)
             makeDirectories(workingPath)
+            createConstantsFile(workingPath, projectName)
         else:
             print("Invalid xcode project path.")
-    except FileNotFoundError:
-        print("Invalid xcode project path.", FileNotFoundError)
-    except Exception:
-        print("Error occured.", Exception)
+    except FileNotFoundError as e:
+        print("Invalid xcode project path.", e)
+    except Exception as e:
+        print("Error occurred.", e)
 
 ''' Remove unownted files '''
 def removeFiles(path: str):
@@ -58,6 +61,7 @@ def makeDirectories(path: str):
             mkdir(path + "Resources")
             mkdir(path + "Extensions")
             mkdir(path + "Protocols")
+            mkdir(path + "Models")
         except OSError:
             print("directories exist.")
     else:
@@ -65,6 +69,59 @@ def makeDirectories(path: str):
 
 
 
+'''Create constants file'''
+def createConstantsFile(path: str, projectName: str):
+    resourcesPath = path + "Resources/"
+    try:
+        with io.open(resourcesPath + "C.swift", mode="wb") as c:
+            c_text = ''' //  C.swift
+//  testprojct
+//  Created by GeMoOo on 2018-01-22 22:50:27.477414.
+//  Copyright © GeMoOo. All rights reserved.
+
+struct C {{
+    
+    struct Keys {{
+        
+    }}
+    
+    struct Localizations {{
+        
+    }}
+    
+}}'''.format(projectName, datetime.now())
+            c.write(bytes(c_text, encoding='utf8'))
+    except FileNotFoundError as e:
+        print(__name__, e)
+    except FileExistsError as e:
+        print(__name__, e)
+    except Exception as e:
+        print("Error occurred.", e)
+
+
+''' Create coordinator protocol'''
+def createCoordinatorProtocol():
+    pass
+
 
 if __name__ == '__main__':
         main()
+
+
+
+
+
+
+
+#/Users/gamal/Desktop/testprojct
+
+
+
+
+
+
+
+
+
+
+
