@@ -27,6 +27,7 @@ def main():
             removeFiles(workingPath)
             makeDirectories(workingPath)
             createConstantsFile(workingPath, projectName)
+            createCoordinatorProtocol(path=workingPath, projectName=projectName)
         else:
             print("Invalid xcode project path.")
     except FileNotFoundError as e:
@@ -75,9 +76,11 @@ def createConstantsFile(path: str, projectName: str):
     try:
         with io.open(resourcesPath + "C.swift", mode="wb") as c:
             c_text = ''' //  C.swift
-//  testprojct
-//  Created by GeMoOo on 2018-01-22 22:50:27.477414.
+//  {0}
+//  Created by GeMoOo on {1}.
 //  Copyright © GeMoOo. All rights reserved.
+
+import Foundation
 
 struct C {{
     
@@ -100,8 +103,31 @@ struct C {{
 
 
 ''' Create coordinator protocol'''
-def createCoordinatorProtocol():
-    pass
+def createCoordinatorProtocol(path: str, projectName: str):
+    protocols_path = path + "Protocols/"
+    try:
+        with io.open(protocols_path + "Coordinator.swift", mode="wb") as file:
+            text = '''
+            // Coordinator.swift
+            // {projectName}.
+            // Created by GeMoOo on {timestamp}.
+            // Copyright © GeMoOo. All rights reserved.
+            
+            import Foundation
+            
+            @ojcMembers
+            protocol Coordinator {{
+                optional func start() -> Void
+                optional var controller: UIViewController? {{ set get }}
+            }}
+            '''.format(projectName=projectName, timestamp=datetime.now())
+            file.write(bytes(text, encoding='utf8'))
+    except FileNotFoundError as e:
+        print(__name__, e)
+    except FileExistsError as e:
+        print(__name__, e)
+    except Exception as e:
+        print("Error Occurred:", e)
 
 
 if __name__ == '__main__':
