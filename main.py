@@ -28,7 +28,7 @@ def main():
             makeDirectories(workingPath)
             createConstantsFile(workingPath, projectName)
             createProtocols(workingPath, projectName)
-
+            create_observer_class(workingPath, projectName)
         else:
             print("Invalid xcode project path.")
     except FileNotFoundError as e:
@@ -40,7 +40,7 @@ def main():
 ''' Create protocols'''
 def createProtocols(path: str, projectName: str):
     createCoordinatorProtocol(path=path, projectName=projectName)
-    createMoldelProtocol(path=path, projectName=projectName)
+    createModelProtocol(path=path, projectName=projectName)
     createViewModelProtocol(path, projectName)
     create_controller_protocol(path, projectName)
     create_notifier_protocol(path, projectName)
@@ -144,7 +144,7 @@ def createCoordinatorProtocol(path: str, projectName: str):
 
 
 ''' Create model protocol '''
-def createMoldelProtocol(path: str, projectName: str):
+def createModelProtocol(path: str, projectName: str):
     modelPath = path + "Protocols/Model.swift"
     try:
         with io.open(modelPath, mode="wb") as file:
@@ -347,8 +347,51 @@ def create_observer_class(path: str, projectName: str):
     try:
         with io.open(observer_file_path, mode="wb") as file:
             content = """
-            
-            """
+                //  Observer.swift
+                //  {projectName}
+                //  Created by GeMoOo on {timestamp}.
+                //  Copyright © GeMoOo. All rights reserved.
+                
+                import Foundation
+                
+                
+                internal final class Observer<Variable> {{
+                    
+                    
+                    typealias Listener = (Variable?)->()
+                    
+                    private var listener: Listener?
+                    
+                    internal var value: Variable? {{
+                        didSet {{
+                            if value != nil {{
+                                listener?(value)
+                                print("\(value.customMirror.subjectType) 💡.")
+                            }}
+                        }}
+                    }}
+                    
+                    init() {{
+                        print("\(value.customMirror.subjectType) initialized 🚀.")
+                    }}
+                    
+                    internal func bind(_ listener: Listener?) -> Void {{
+                        DispatchQueue.global(qos: .userInteractive).async {{ [weak self] in
+                            self?.listener = listener
+                            if self?.value != nil {{
+                                listener?(self?.value)
+                            }}
+                        }}
+                    }}
+                    
+                    deinit {{
+                        print("\(value.customMirror.subjectType) 💀.")
+                    }}
+                    
+                    
+                }}
+                
+            """.format(projectName=projectName, timestamp=datetime.now())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
