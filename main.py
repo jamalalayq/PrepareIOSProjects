@@ -29,6 +29,7 @@ def main():
             createConstantsFile(workingPath, projectName)
             createProtocols(workingPath, projectName)
             create_observer_class(workingPath, projectName)
+            createLocalizableFile(workingPath, projectName)
         else:
             print("Invalid xcode project path.")
     except FileNotFoundError as e:
@@ -400,7 +401,26 @@ def create_observer_class(path: str, projectName: str):
     except Exception as e:
         print(__name__, e)
 
+''' Create localizable file '''
+def createLocalizableFile(path: str, projectName: str):
+    localizable_file_path = path + "Resources/Localizable.strings"
+    try:
+        with io.open(localizable_file_path, mode="wb") as file:
+            content = """
+                   //  Localizable.strings
+                   //  {projectName}
+                   //  Created by GeMoOo on {timestamp}.
+                   //  Copyright © GeMoOo. All rights reserved.
 
+
+               """.format(projectName=projectName, timestamp=datetime.now())
+            file.write(bytes(content, "utf8"))
+    except FileNotFoundError as e:
+        print(__name__, e)
+    except FileExistsError as e:
+        print(__name__, e)
+    except Exception as e:
+        print(__name__, e)
 
 
 if __name__ == '__main__':
