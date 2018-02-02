@@ -212,12 +212,14 @@ def create_controller_protocol(path: str, projectName: str):
             import Foundation
             import UIKit
                         
-            protocol Controller  {{
-                            
-            }}
+            protocol Controller: Notifier, Threading, Naming  {{   }}
             
             extension Controller where Self: UIViewController {{
+            
+            
             }}
+            
+            
             """.format(projectName=projectName, timestamp=datetime.now())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
@@ -401,16 +403,18 @@ def create_observer_class(path: str, projectName: str):
     except Exception as e:
         print(__name__, e)
 
+
 ''' Create localizable file '''
 def createLocalizableFile(path: str, projectName: str):
     localizable_file_path = path + "Resources/Localizable.strings"
     try:
         with io.open(localizable_file_path, mode="wb") as file:
             content = """
-                   //  Localizable.strings
-                   //  {projectName}
-                   //  Created by GeMoOo on {timestamp}.
-                   //  Copyright © GeMoOo. All rights reserved.
+                   /*  Localizable.strings
+                       {projectName}
+                       Created by GeMoOo on {timestamp}.
+                       Copyright © GeMoOo. All rights reserved.
+                    */
 
 
                """.format(projectName=projectName, timestamp=datetime.now())
@@ -421,6 +425,7 @@ def createLocalizableFile(path: str, projectName: str):
         print(__name__, e)
     except Exception as e:
         print(__name__, e)
+
 
 
 if __name__ == '__main__':
