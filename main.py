@@ -1,7 +1,8 @@
 
 from os import *
 from datetime import *
-import  io
+import io
+import platform
 
 
 '''
@@ -77,6 +78,8 @@ def makeDirectories(path: str):
             mkdir(path + "Extensions")
             mkdir(path + "Protocols")
             mkdir(path + "Models")
+            mkdir(path + "Common")
+            mkdir(path + "Storyboards")
         except OSError:
             print("directories exist.")
     else:
@@ -90,8 +93,8 @@ def createConstantsFile(path: str, projectName: str):
         with io.open(resourcesPath + "C.swift", mode="wb") as c:
             c_text = ''' //  C.swift
 //  {0}
-//  Created by GeMoOo on {1}.
-//  Copyright © GeMoOo. All rights reserved.
+//  Created by {2} on {1}.
+//  Copyright © {2}. All rights reserved.
 
 import Foundation
 
@@ -105,7 +108,7 @@ struct C {{
         
     }}
     
-}}'''.format(projectName, datetime.now())
+}}'''.format(projectName, datetime.now(), platform.node())
             c.write(bytes(c_text, encoding='utf8'))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -123,8 +126,8 @@ def createCoordinatorProtocol(path: str, projectName: str):
             text = '''
             // Coordinator.swift
             // {projectName}.
-            // Created by GeMoOo on {timestamp}.
-            // Copyright © GeMoOo. All rights reserved.
+            // Created by {platformName} on {timestamp}.
+            // Copyright © {platformName}. All rights reserved.
             
             import Foundation
             import UIKit
@@ -134,7 +137,7 @@ def createCoordinatorProtocol(path: str, projectName: str):
                 @objc optional func start() -> Void
                 @objc optional var controller: UIViewController? {{ set get }}
             }}
-            '''.format(projectName=projectName, timestamp=datetime.now())
+            '''.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(text, encoding='utf8'))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -152,15 +155,15 @@ def createModelProtocol(path: str, projectName: str):
             content = """
             // Model.swift
             // {projectName}.
-            // Created by GeMoOo on {timestamp}.
-            // Copyright © GeMoOo. All rights reserved.
+            // Created by {platformName} on {timestamp}.
+            // Copyright © {platformName}. All rights reserved.
                 
             import Foundation
                         
             protocol Model {{
                             
             }}
-            """.format(projectName=projectName, timestamp=datetime.now())
+            """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, encoding='utf8'))
     except FileExistsError as e:
         print(__name__, e)
@@ -178,15 +181,15 @@ def createViewModelProtocol(path: str, projectName: str):
             content = """
             // ViewModel.swift
             // {projectName}.
-            // Created by GeMoOo on {timestamp}.
-            // Copyright © GeMoOo. All rights reserved.
+            // Created by {platformName} on {timestamp}.
+            // Copyright © {platformName}. All rights reserved.
                 
             import Foundation
                         
             protocol ViewModel {{
                             
             }}
-            """.format(projectName=projectName, timestamp=datetime.now())
+            """.format(projectName=projectName, timestamp=datetime.now(),platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -206,8 +209,8 @@ def create_controller_protocol(path: str, projectName: str):
             content = """
             // Controller.swift
             // {projectName}.
-            // Created by GeMoOo on {timestamp}.
-            // Copyright © GeMoOo. All rights reserved.
+            // Created by {platformName} on {timestamp}.
+            // Copyright © {platformName}. All rights reserved.
                 
             import Foundation
             import UIKit
@@ -220,7 +223,7 @@ def create_controller_protocol(path: str, projectName: str):
             }}
             
             
-            """.format(projectName=projectName, timestamp=datetime.now())
+            """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -238,8 +241,8 @@ def create_notifier_protocol(path: str, projectName: str):
             content = """
                 // Notifier.swift
                 // {projectName}.
-                // Created by GeMoOo on {timestamp}.
-                // Copyright © GeMoOo. All rights reserved.
+                // Created by {platformName} on {timestamp}.
+                // Copyright © {platformName}. All rights reserved.
 
                 import Foundation
                 import UIKit
@@ -259,7 +262,7 @@ def create_notifier_protocol(path: str, projectName: str):
                     }}
                     
                 }}
-                """.format(projectName=projectName, timestamp=datetime.now())
+                """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -277,8 +280,8 @@ def create_threading_protocol(path: str, projectName: str):
             content = """
                     // Threading.swift
                     // {projectName}.
-                    // Created by GeMoOo on {timestamp}.
-                    // Copyright © GeMoOo. All rights reserved.
+                    // Created by {platformName} on {timestamp}.
+                    // Copyright © {platformName}. All rights reserved.
 
                     import Foundation
 
@@ -297,7 +300,7 @@ def create_threading_protocol(path: str, projectName: str):
                         }}
 
                     }}
-                    """.format(projectName=projectName, timestamp=datetime.now())
+                    """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -315,8 +318,8 @@ def create_naming_protocol(path: str, project_name: str):
             content = """
             //  Naming.swift
             //  {project_name}
-            //  Created by GeMoOo on {timestamp}.
-            //  Copyright © GeMoOo. All rights reserved.
+            //  Created by {platformName} on {timestamp}.
+            //  Copyright © {platformName}. All rights reserved.
             
             
             import Foundation
@@ -334,7 +337,7 @@ def create_naming_protocol(path: str, project_name: str):
 
 
 
-            """.format(project_name=project_name, timestamp=datetime.now())
+            """.format(project_name=project_name, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileExistsError as e:
         print(__name__, e)
@@ -352,8 +355,8 @@ def create_observer_class(path: str, projectName: str):
             content = """
                 //  Observer.swift
                 //  {projectName}
-                //  Created by GeMoOo on {timestamp}.
-                //  Copyright © GeMoOo. All rights reserved.
+                //  Created by {platformName} on {timestamp}.
+                //  Copyright © {platformName}. All rights reserved.
                 
                 import Foundation
                 
@@ -368,7 +371,9 @@ def create_observer_class(path: str, projectName: str):
                     internal var value: Variable? {{
                         didSet {{
                             if value != nil {{
-                                listener?(value)
+                                DispatchQueue.global(qos: .userInitiated).async {{ [weak self] in
+                                    self?.listener?(self?.value)
+                                }}                                
                                 print("\(value.customMirror.subjectType) 💡.")
                             }}
                         }}
@@ -379,7 +384,7 @@ def create_observer_class(path: str, projectName: str):
                     }}
                     
                     internal func bind(_ listener: Listener?) -> Void {{
-                        DispatchQueue.global(qos: .userInteractive).async {{ [weak self] in
+                        DispatchQueue.global(qos: .userInitiated).async {{ [weak self] in
                             self?.listener = listener
                             if self?.value != nil {{
                                 listener?(self?.value)
@@ -394,7 +399,7 @@ def create_observer_class(path: str, projectName: str):
                     
                 }}
                 
-            """.format(projectName=projectName, timestamp=datetime.now())
+            """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -412,12 +417,12 @@ def createLocalizableFile(path: str, projectName: str):
             content = """
                    /*  Localizable.strings
                        {projectName}
-                       Created by GeMoOo on {timestamp}.
-                       Copyright © GeMoOo. All rights reserved.
+                       Created by {platformName} on {timestamp}.
+                       Copyright © {platformName}. All rights reserved.
                     */
 
 
-               """.format(projectName=projectName, timestamp=datetime.now())
+               """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
         print(__name__, e)
@@ -425,6 +430,100 @@ def createLocalizableFile(path: str, projectName: str):
         print(__name__, e)
     except Exception as e:
         print(__name__, e)
+
+
+''' Create localizer file '''
+def create_localizer_class(path: str, project_name: str):
+    file_path = path + "Common/Localizer.swift"
+    try:
+        with io.open(file_path, mode="wb") as file:
+            content = """
+                    //  Localizer.swift
+                    //  {projectName}
+                    //  Created by {platformName} on {timestamp}.
+                    //  Copyright © {platformName}. All rights reserved.
+                    
+                    import Foundation
+                    
+                                        
+                    // MARK:-  Constants
+                    private let DefaultLanguageSign = "default.language.ia"
+                    
+                    internal final class Localizer: NSObject {{
+                        
+                        private static let defaultSign = Bundle.main.preferredLocalizations[0]
+                        
+                        /**
+                         Get available languages from main bundle
+                         - returns: array of languages signs
+                         */
+                        internal class func getSelectedLanguages() -> Array<String> {{
+                            var languages = Bundle.main.localizations
+                            if let base = languages.index(of: "Base") {{
+                                languages.remove(at: base)
+                            }}
+                            return languages
+                        }}
+                        
+                        /**
+                         Get default language or saved language
+                         - returns: language sign string
+                         */
+                        internal static var current: String {{
+                            return UserDefaults.standard.string(forKey: DefaultLanguageSign) ?? defaultSign
+                        }}
+                        
+                        /**
+                         Save language and put it default
+                         - parameter language: may be language sign to save it
+                         - returns: void
+                         */
+                        internal class func set(language: String) -> Void {{
+                            let lang = getSelectedLanguages().contains(language) ? language : defaultSign
+                            guard (lang != current) else {{ return }}
+                            UserDefaults.standard.set(lang, forKey: DefaultLanguageSign)
+                            UserDefaults.standard.synchronize()
+                            NotificationCenter.default.post(name: .LanguageDidChanged, object: nil)
+                        }}
+                        
+                    }}
+                    
+                    
+                    // MARK:-  Notifications.Name
+                    internal extension Notification.Name {{
+                        internal static var LanguageDidChanged: Notification.Name {{
+                            return Notification.Name("language.did.changed.ia")
+                        }}
+                    }}
+                    
+                    
+                    // MARK:-  Strings
+                    internal extension String {{
+                        
+                        /// get localize string for key from localizable files
+                        internal var localized: String {{
+                            guard let languageStringsFilePath = Bundle.main.path(forResource: Localizer.current, ofType: "lproj") else {{
+                                return Bundle.main.localizedString(forKey: self, value: nil, table: nil) 
+                             }}
+                            return Bundle(path: languageStringsFilePath)?.localizedString(forKey: self, value: nil, table: nil) ?? self
+                        }}
+                    }}
+                    
+                    
+
+
+
+            """.format(projectName=project_name, timestamp=datetime.now(), platformName=platform.node())
+            file.write(bytes(content, "utf8"))
+
+    except FileExistsError as e:
+        print(__name__, e)
+    except FileNotFoundError as e:
+        print(__name__, e)
+    except Exception as e:
+        print(__name__, e)
+
+
 
 
 
