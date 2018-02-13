@@ -3,6 +3,7 @@ from os import *
 from datetime import *
 import io
 import platform
+import shutil
 
 
 '''
@@ -25,18 +26,23 @@ def main():
         if xcodeFile in phomeDirFiles:
             workingPath = path + projectName + "/"
             print("working directory", workingPath)
-            removeFiles(workingPath)
             makeDirectories(workingPath)
             createConstantsFile(workingPath, projectName)
             createProtocols(workingPath, projectName)
             create_observer_class(workingPath, projectName)
             createLocalizableFile(workingPath, projectName)
+            create_localizer_class(workingPath, projectName)
+            create_app_coordinator(workingPath, projectName)
+            create_app_navigator(workingPath, projectName)
+            create_app_delegate(workingPath, projectName)
+            move_view_controller(workingPath)
+            move_assets_to_resources(workingPath)
         else:
-            print("Invalid xcode project path.")
+            print("Invalid xcode project path.", main.__name__)
     except FileNotFoundError as e:
-        print("Invalid xcode project path.", e)
+        print("Invalid xcode project path.", e, main.__name__)
     except Exception as e:
-        print("Error occurred.", e)
+        print("Error occurred.", e, main.__name__)
 
 
 ''' Create protocols'''
@@ -51,18 +57,18 @@ def createProtocols(path: str, projectName: str):
 
 
 ''' Remove unownted files '''
-def removeFiles(path: str):
+def move_view_controller(path: str):
     if type(path) == str:
         try:
-            remove(path + "ViewController.swift")
-        except FileExistsError:
-            print("File removed in advance.", FileExistsError)
-        except FileNotFoundError:
-            print("File removed in advance.", FileNotFoundError)
-        except Exception:
-            print("Error occured", Exception)
+            shutil.move(f"{path}ViewController.swift", dst=f"{path}Common/ViewController.swift")
+        except FileExistsError as e:
+            print("File removed in advance.", e, move_view_controller.__name__)
+        except FileNotFoundError as e:
+            print("File removed in advance.", e, move_view_controller.__name__)
+        except Exception as e:
+            print("Error occurred", e, move_view_controller.__name__)
     else:
-        print("invalid path.")
+        print("invalid path.", move_view_controller.__name__)
 
 
 ''' Create directories '''
@@ -80,10 +86,11 @@ def makeDirectories(path: str):
             mkdir(path + "Models")
             mkdir(path + "Common")
             mkdir(path + "Storyboards")
+            mkdir(path + "Modules/App")
         except OSError:
-            print("directories exist.")
+            print("directories exist.", makeDirectories.__name__)
     else:
-        print("invalid path.")
+        print("invalid path.", makeDirectories.__name__)
 
 
 '''Create constants file'''
@@ -111,11 +118,11 @@ struct C {{
 }}'''.format(projectName, datetime.now(), platform.node())
             c.write(bytes(c_text, encoding='utf8'))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(createConstantsFile.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(createConstantsFile.__name__, e)
     except Exception as e:
-        print("Error occurred.", e)
+        print("Error occurred.", e, createConstantsFile.__name__)
 
 
 ''' Create coordinator protocol'''
@@ -140,11 +147,11 @@ def createCoordinatorProtocol(path: str, projectName: str):
             '''.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(text, encoding='utf8'))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(createCoordinatorProtocol.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(createCoordinatorProtocol.__name__, e)
     except Exception as e:
-        print("Error Occurred:", e)
+        print("Error Occurred:", e, createCoordinatorProtocol.__name__)
 
 
 ''' Create model protocol '''
@@ -166,11 +173,11 @@ def createModelProtocol(path: str, projectName: str):
             """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, encoding='utf8'))
     except FileExistsError as e:
-        print(__name__, e)
+        print(createModelProtocol.__name__, e)
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(createModelProtocol.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(createModelProtocol.__name__, e)
 
 
 ''' Create view model protocol '''
@@ -192,13 +199,13 @@ def createViewModelProtocol(path: str, projectName: str):
             """.format(projectName=projectName, timestamp=datetime.now(),platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(createViewModelProtocol.__name__, e)
 
     except FileExistsError as e:
-        print(__name__, e)
+        print(createViewModelProtocol.__name__, e)
 
     except Exception as e:
-        print(__name__, e)
+        print(createViewModelProtocol.__name__, e)
 
 
 ''' Create controller protocol '''
@@ -226,11 +233,11 @@ def create_controller_protocol(path: str, projectName: str):
             """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_controller_protocol.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_controller_protocol.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_controller_protocol.__name__, e)
 
 
 ''' Create notifier protocol '''
@@ -265,11 +272,11 @@ def create_notifier_protocol(path: str, projectName: str):
                 """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_notifier_protocol.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_notifier_protocol.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_notifier_protocol.__name__, e)
 
 
 ''' Create Threading protocol '''
@@ -303,11 +310,11 @@ def create_threading_protocol(path: str, projectName: str):
                     """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_threading_protocol.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_threading_protocol.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_threading_protocol.__name__, e)
 
 
 ''' Create naming protocol '''
@@ -340,16 +347,16 @@ def create_naming_protocol(path: str, project_name: str):
             """.format(project_name=project_name, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_naming_protocol.__name__, e)
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_naming_protocol.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_naming_protocol.__name__, e)
 
 
 ''' Create observer class '''
 def create_observer_class(path: str, projectName: str):
-    observer_file_path = path + "Resources/Observer.swift"
+    observer_file_path = path + "Common/Observer.swift"
     try:
         with io.open(observer_file_path, mode="wb") as file:
             content = """
@@ -402,11 +409,11 @@ def create_observer_class(path: str, projectName: str):
             """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_observer_class.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_observer_class.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_observer_class.__name__, e)
 
 
 ''' Create localizable file '''
@@ -425,11 +432,11 @@ def createLocalizableFile(path: str, projectName: str):
                """.format(projectName=projectName, timestamp=datetime.now(), platformName=platform.node())
             file.write(bytes(content, "utf8"))
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(createLocalizableFile.__name__, e)
     except FileExistsError as e:
-        print(__name__, e)
+        print(createLocalizableFile.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(createLocalizableFile.__name__, e)
 
 
 ''' Create localizer file '''
@@ -517,14 +524,156 @@ def create_localizer_class(path: str, project_name: str):
             file.write(bytes(content, "utf8"))
 
     except FileExistsError as e:
-        print(__name__, e)
+        print(create_localizer_class.__name__, e, )
     except FileNotFoundError as e:
-        print(__name__, e)
+        print(create_localizer_class.__name__, e)
     except Exception as e:
-        print(__name__, e)
+        print(create_localizer_class.__name__, e)
 
 
+''' Create app coordinator '''
+def create_app_coordinator(path: str, project_name: str):
+    file_path = path + "Modules/App/AppCoordinator.swift"
+    try:
+        with io.open(file_path, mode="wb") as file:
+            content = """
+                        //  AppCoordinator.swift
+                        //  {projectName}
+                        //  Created by {platformName} on {timestamp}.
+                        //  Copyright © {platformName}. All rights reserved.
+                                            
+                        import Foundation            
+                        import UIKit
+                        
+                        
+                        internal final class AppCoordinator: Coordinator {{
+                            
+                            // MARK: - Variables
+                            
+                            private var _window: UIWindow?
+                            
+                            
+                            // MARK: - Initializers
+                            
+                            required init(_ window: UIWindow?) {{
+                                self._window = window
+                            }}
+                            
+                            
+                            // MARK: - Functions
+                            
+                            internal func start() {{              
+                                _window?.makeKeyAndVisible()
+                            }}
+                               
+                        }}     
+            """.format(projectName=project_name, timestamp=datetime.now(), platformName=platform.node())
+            file.write(bytes(content, "utf8"))
+    except FileExistsError as e:
+        print(__name__, e, create_app_coordinator.__name__)
+    except FileNotFoundError as e:
+        print(__name__, e, create_app_coordinator.__name__)
+    except Exception as e:
+        print(__name__, e, create_app_coordinator.__name__)
 
+
+''' Create app navigator '''
+def create_app_navigator(path: str, project_name: str):
+    file_path = path + "Modules/App/AppNavigator.swift"
+    try:
+        with io.open(file_path, mode="wb") as file:
+            content = """
+//  AppNavigator.swift
+//  {projectName}
+//  Created by {platformName} on {timestamp}.
+//  Copyright © {platformName}. All rights reserved.
+
+import Foundation            
+import UIKit
+
+
+internal final class AppNavigator: UINavigationController {{
+
+                            
+    // MARK: - Variables
+    
+    internal private(set) var appCoordinator: AppCoordinator?
+    
+    
+    // MARK: - Overridden functions
+    
+    internal override func loadView() {{
+        super.loadView()
+        appCoordinator = (UIApplication.shared.delegate as? AppDelegate)?.appCoordinator
+    }}
+    
+}}     
+            """.format(projectName=project_name, timestamp=datetime.now(), platformName=platform.node())
+            file.write(bytes(content, "utf8"))
+    except FileExistsError as e:
+        print(__name__, e, create_app_navigator.__name__)
+    except FileNotFoundError as e:
+        print(__name__, e, create_app_navigator.__name__)
+    except Exception as e:
+        print(__name__, e, create_app_navigator.__name__)
+
+
+''' Create app delegate '''
+def create_app_delegate(path: str, project_name: str):
+    try:
+        destination = f"{path}Modules/App/AppDelegate.swift"
+        shutil.move(f"{path}AppDelegate.swift", dst=destination)
+        with io.open(destination, mode="wb") as file:
+            content = """
+//  AppDelegate.swift
+//  {projectName}
+//  Created by {platformName} on {timestamp}.
+//  Copyright © {platformName}. All rights reserved.
+
+
+import UIKit
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {{
+
+    var window: UIWindow?
+    internal private(set) var appCoordinator: AppCoordinator?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {{
+        window = .init(frame: UIScreen.main.bounds)
+        appCoordinator = .init(window)
+        appCoordinator?.start()        
+        return true
+    }}
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {{
+        return .portrait
+    }}
+
+}}
+
+            """.format(projectName=project_name, platformName=platform.node(), timestamp=datetime.now())
+            file.write(bytes(content, "utf8"))
+
+    except FileExistsError as e:
+        print("File removed in advance.", e, create_app_delegate.__name__)
+    except FileNotFoundError as e:
+        print("File removed in advance.", e, create_app_delegate.__name__)
+    except Exception as e:
+        print("Error occurred", e, create_app_delegate.__name__)
+
+
+''' Move assets to resources '''
+def move_assets_to_resources(path: str):
+    src = f"{path}Assets.xcassets"
+    try:
+        shutil.move(src, dst=f"{path}Resources/Assets.xcassets")
+    except FileExistsError as e:
+        print("File removed in advance.", e, move_assets_to_resources.__name__)
+    except FileNotFoundError as e:
+        print("File removed in advance.", e, move_assets_to_resources.__name__)
+    except Exception as e:
+        print("Error occurred", e, move_assets_to_resources.__name__)
 
 
 if __name__ == '__main__':
@@ -536,7 +685,7 @@ if __name__ == '__main__':
 
 
 
-#/Users/gamal/Desktop/testprojct
+#/Users/gemooo/Desktop/test-project
 
 
 
